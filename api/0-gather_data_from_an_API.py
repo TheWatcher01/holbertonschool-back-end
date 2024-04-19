@@ -10,35 +10,37 @@ employee's TODO tasks using a REST API.
 import requests
 import sys
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
+    # Retrieve the employee ID from the command line arguments.
     employee_id = int(sys.argv[1])
-    # Get the employee's name
-    employee_url = ("https://jsonplaceholder.typicode.com/users/"
-                    f"{employee_id}")
+
+    # Construct the URL to fetch the employee's information.
+    base_url = 'https://jsonplaceholder.typicode.com/users/'
+    employee_url = '{}{}'.format(base_url, employee_id)
+
+    # Send a GET request to the employee URL and convert the response to JSON.
     user_response = requests.get(employee_url)
     user_info = user_response.json()
+
+    # Extract the employee's name from the JSON response.
     EMPLOYEE_NAME = user_info.get('name')
 
-    # Get all the tasks of an employee
-    alltasks_url = ("https://jsonplaceholder.typicode.com/users/"
-                    f"{employee_id}/todos")
-    alltasks_response = requests.get(alltasks_url)
-    todos = alltasks_response.json()
+    # Construct the URL to fetch the employee's tasks.
+    tasks_url = '{}{}/todos'.format(base_url, employee_id)
 
-    # Count the total number of completed tasks and total tasks
+    # Send a GET request to the tasks URL and convert the response to JSON.
+    tasks_response = requests.get(tasks_url)
+    todos = tasks_response.json()
+
+    # Calculate the total number of tasks and the number of completed tasks.
     TOTAL_NUMBER_OF_TASKS = len(todos)
-    count = 0
-    for task in todos:
-        if task.get('completed') is True:
-            count += 1
-    NUMBER_OF_DONE_TASKS = count
+    done_tasks = [task for task in todos if task.get('completed') is True]
+    NUMBER_OF_DONE_TASKS = len(done_tasks)
 
-    print(
-        f"Employee {EMPLOYEE_NAME} is done with tasks"
-        f"({NUMBER_OF_DONE_TASKS}/{TOTAL_NUMBER_OF_TASKS}):")
+    # Print the employee's progress.
+    print('Employee {} is done with tasks({}/{}):'.format(
+        EMPLOYEE_NAME, NUMBER_OF_DONE_TASKS, TOTAL_NUMBER_OF_TASKS))
 
-    # Print the title of completed tasks
-    for task in todos:
-        if task.get('completed') is True:
-            print(f"\t {task.get('title')}")
+    # Print the title of each completed task.
+    for task in done_tasks:
+        print('\t {}'.format(task.get('title')))
