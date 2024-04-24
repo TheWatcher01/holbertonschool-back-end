@@ -1,26 +1,23 @@
 #!/usr/bin/env python3
 
 """
-Module: 2-main.py
+File: 1-async_comprehension.py
 Author: TheWatcher01
 Date: 2024-04-24
-Description: This module imports & utilizes measure_runtime function
-from the 2-measure_runtime module. It prints result of the function.
+Description: Description
 """
 
 import asyncio
 
-# Importing measure_runtime function from the 2-measure_runtime module
-measure_runtime = __import__('2-measure_runtime').measure_runtime
+async_generator = __import__('0-async_generator').async_generator
 
 
-async def main():
+async def async_comprehension():
     """
-    Asynchronous function that returns result of measure_runtime function.
+    Asynchronous function that utilizes async generator to create a list of
+    random numbers between 0 and 10.
 
-    This function awaits result of measure_runtime function and returns it.
+    Function creates a list of random numbers between 0 and 10 using an
+    asynchronous generator. It awaits the generator and returns the list.
     """
-    return await measure_runtime()  # Return result of measure_runtime function
-
-# Run the main function using asyncio.run function and print result
-print(asyncio.run(main()))
+    return [i async for i in async_generator()]
