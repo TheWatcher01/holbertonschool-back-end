@@ -5,8 +5,8 @@
  * @description Dsipalying a message in STDOUT
  */
 
-function displayMessage(massage) {
-  console.log(massage);
+function displayMessage(message) {
+  console.log(message);
 }
 
-export default displayMessage;
+module.exports = displayMessage;
